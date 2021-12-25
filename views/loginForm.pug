@@ -1,0 +1,13 @@
+﻿extends layout
+
+block content
+    main
+      //- přihlašovací formulář 
+      .container
+        form#login.form-signin(action='login', method='post')
+          h2.form-signin-heading Login
+          label.sr-only(for='inputUsername') Jméno
+          input#inputUsername.form-control(type='text', name='username', placeholder='Uživatelské jméno', required, autofocus)
+          label.sr-only(for='inputPassword') Heslo
+          input#inputPassword.form-control(type='password', name='password', placeholder='Heslo', required)
+          button.btn.btn-lg.btn-primary.btn-block(type='submit') Přihlásit se
