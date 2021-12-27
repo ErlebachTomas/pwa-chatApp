@@ -1,11 +1,13 @@
 'use strict';
-const debug = require('debug')('my express app');
-const express = require('express');
+const debug = require('debug')('myApp');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+
+const express = require('express');
+const WebSocketServer = require('ws').Server;
 
 // dbs 
 const mongoose = require('mongoose');
@@ -31,7 +33,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/api', apiRouter);
-
 
 // error handlers
 // catch 404 and forward to error handler
@@ -66,18 +67,45 @@ app.use(function (err, req, res, next) {
 let local = true //todo upravit 
 let mongoDBUrl;
 
-    if (local) {
-        mongoDBUrl = 'mongodb://localhost:27017/Chat';
-    } else {
-        mongoDBUrl = process.env.DB_CONNECTION;
-    }
-
+if (local) {
+    mongoDBUrl = "mongodb://localhost:27017/Chat";
+    
+} else {
+    mongoDBUrl = process.env.DB_CONNECTION;     
+}
 mongoose.connect(mongoDBUrl);
 mongoose.Promise = global.Promise;
+   
 
-    
+
+
+// Server  
 app.set('port', process.env.PORT || 3000);
-var server = app.listen(app.get('port'), function () {
+
+const server = require('http').createServer(app);
+
+server.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
-    debug('Local? ' + local);
+    debug('DB:' + process.env.DB_CONNECTION);
+});
+
+
+// WebSocketServer
+let wss = new WebSocketServer({ server: server });
+
+wss.on('connection', function (ws) {
+
+    debug('ws client pripojen');
+    ws.send('pripojen');
+
+    // ws prijem 
+    ws.on('message', function (message) {
+
+        debug(message);
+
+    });
+
+    ws.on('close', function () {
+        debug("connection closed");
+    })
 });
