@@ -1,4 +1,5 @@
 'use strict';
+const dotenv = require('dotenv').config();
 const debug = require('debug')('myApp');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -86,7 +87,7 @@ const server = require('http').createServer(app);
 
 server.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
-    debug('DB:' + process.env.DB_CONNECTION);
+    debug('DB:' + mongoDBUrl);
 });
 
 

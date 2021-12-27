@@ -1,3 +1,5 @@
 node_modules
 pwa-chatApp.njsproj
 pwa-chatApp.njsproj.user
+.env
+start Nodemon liveServer.bat
