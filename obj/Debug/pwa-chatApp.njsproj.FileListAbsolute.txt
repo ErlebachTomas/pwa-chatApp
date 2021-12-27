@@ -1,3 +1,0 @@
-D:\OneDrive\_TUL_NS\PWA\pwa-chatApp\pwa-chatApp\obj\Debug\pwa-chatApp.njsproj.AssemblyReference.cache
-D:\OneDrive\_TUL_NS\PWA\pwa-chatApp\pwa-chatApp\obj\Debug\pwa-chatApp.njsproj.CoreCompileInputs.cache
-D:\OneDrive\_TUL_NS\PWA\pwa-chatApp\pwa-chatApp\bin\Microsoft.NodejsTools.WebRole.dll

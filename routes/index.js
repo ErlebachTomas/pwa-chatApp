@@ -13,4 +13,9 @@ router.get('/login', function (req, res) {
     res.render('loginForm', { title: 'Login' });
 });
 
+/* CSS demo */ 
+router.get('/demo', function (req, res) {
+    res.render('demo', { title: 'CSS demo' });
+});
+
 module.exports = router;
