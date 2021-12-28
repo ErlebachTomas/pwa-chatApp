@@ -65,7 +65,7 @@ app.use(function (err, req, res, next) {
 
 
 // mongoose setup
-let local = true //todo upravit 
+let local = true //todo upravit
 let mongoDBUrl;
 
 if (local) {
@@ -101,8 +101,10 @@ wss.on('connection', function (ws) {
 
     // ws prijem 
     ws.on('message', function (message) {
-
-        debug(message);
+       
+        let msg = message.toString();
+        debug(msg);
+        ws.send(msg);
 
     });
 
