@@ -97,14 +97,14 @@ let wss = new WebSocketServer({ server: server });
 wss.on('connection', function (ws) {
 
     debug('ws client pripojen');
-    ws.send('pripojen');
-
+  
     // ws prijem 
     ws.on('message', function (message) {
-       
-        let msg = message.toString();
-        debug(msg);
-        ws.send(msg);
+          
+        let msg = JSON.parse(message.toString());
+        debug("prijem " + msg.type);
+
+        ws.send(JSON.stringify(msg));
 
     });
 

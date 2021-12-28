@@ -27,8 +27,11 @@ $(document).ready(function () {
         event.preventDefault();
         let msg = $('#msgBox').val();
 
-        if (msg.length !== 0) {
-            ws.send(msg);
+        if (msg.length !== 0) {           
+            
+            //todo format obj
+            let json = { type: "text", msg: msg };           
+            ws.send(JSON.stringify(json));
         }
               
      

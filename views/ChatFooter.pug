@@ -1,4 +1,4 @@
 ﻿
-form#sendBox.flex-grow-0.py-3.border-top.input-group
-    input#msgBox.form-control( method = 'POST', type='text', name="msg",  placeholder='Nová zpráva...')
+form#sendBox.flex-grow-0.py-3.border-top.input-group(method = 'POST', action="#")
+    input#msgBox.form-control( type='text', name="msg", autocomplete="off", placeholder='Nová zpráva...')
     <button class='btn btn-primary' type='submit'><i class='fa fa-paper-plane'></i></button>
