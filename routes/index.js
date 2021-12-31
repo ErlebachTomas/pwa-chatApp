@@ -1,31 +1,76 @@
 ﻿'use strict';
 const express = require('express');
 const router = express.Router();
+const ObjectId = require('mongodb').ObjectId;
 
-/* GET home page. */
-router.get('/index', function (req, res) {
-    res.render('index', { title: 'Chat app' });
-});
-
+const debug = require('debug')('myApp');
+const User = require("../model/User");
 
 /* Login */ 
 router.get('/login', function (req, res) {
-    res.render('loginForm', { title: 'Login' });
+    res.render('loginFormPage', { title: 'Přihlášení' });
 });
 
-/* CSS demo */
+
+router.post('/login', async function (req, res) {    
+        
+    let id = req.body.login;
+    let psw = req.body.password;
+
+    debug(id, psw);
+
+    let user = await User.findOne({ login: id }, {}).lean(); // lean convertuje js object
+  
+    if (user != null && psw === user.password) {
+        // todo pass check cryp
+        req.session.userId = user._id.toString();
+
+        res.redirect("/");
+
+    } else {
+        res.json({ psw: "wrong" });
+        
+    }
+
+      
+});
+
+/* HOME page */
+router.get('/', async function (req, res) {
+       
+    if (req.session.userId) {
+        
+        let oid = new ObjectId(req.session.userId);      
+        let user = await User.findOne({ _id: oid }, {}).lean();
+        /* todo render */ 
+        res.render('chatPage', {
+            authorised: true,
+            title: 'Chat app',
+            avatar: user.profilePicture,
+            name: user.name,
+            online: 'před 50 minutami'
+        });
+
+    } else {
+        res.redirect("/login");
+    }
+
+});
+
+router.get('/logout', function (req, res) {
+        
+    debug('Destroy session for' + req.session.userId);
+
+    req.session.destroy();
+
+    res.redirect("/login");
+
+});
+
+
+/* CSS demo todo odstranit */
 router.get('/demo', function (req, res) {
-    res.render('demo', { title: 'CSS demo' });
-});
-
-/* todo / */
-router.get('/', function (req, res) {
-    res.render('chat', {
-        title: 'Chat app',
-        avatar: '/images/avatar.png',
-        name:'Karel Novák',
-        online: 'před 50 minutami'
-    });
+    res.render('demoPage', { title: 'CSS demo' });
 });
 
 module.exports = router;

@@ -1,0 +1,89 @@
+﻿extends layout
+
+block content
+ <main class="content card">
+   <div class="row g-0">
+      <div class="panel col-12 col-lg-5 col-xl-3 border-right">
+         <header>
+            <div class="d-flex align-items-center py-1">
+               <div class="position-relative"><img id="user-avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg" class="mr-1 avatar" alt="Jméno Přijmení"></div>
+               <div class="flex-grow-1 pl-3">
+                  <strong>Jméno Přijmení</strong>
+                  <div class="small"><em>Online</em></div>
+               </div>
+               <button class="btn btn-sm btn-outline-secondary mr-1 px-3"><i class="fas fa-bars"></i></button>           
+            </div>
+            <ul class="nav nav-tabs justify-content-center">
+               <li class="nav-item">
+                  <a class="nav-link active" href="#">Lidé</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="#">Skupiny</a>
+               </li>
+            </ul>
+         </header>
+         <div class="conversation-list">
+            <a href="#" class="list-group-item list-group-item-action border-0 new-message">
+               <div class="float-right"><i class="fas fa-comment"></i></div>
+               <div class="d-flex align-items-start">
+                  <img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg" width="40" height="40">
+                  <div class="flex-grow-1 ml-3 font-weight-bold">
+                     Karel Malý
+                     <div class="small"><em>Online</em></div>
+                  </div>
+               </div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action border-0">
+               <div class="d-flex align-items-start">
+                  <img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg"  width="40" height="40">
+                  <div class="flex-grow-1 ml-3">
+                     Radek Starý
+                     <div class="small"><em>Online</em></div>
+                  </div>
+               </div>
+            </a>
+         </div>
+      </div>
+      <div class="container col-12 col-lg-7 col-xl-9">
+         <div class="p-0">
+            <div class="border-bottom">
+               <div class="d-flex align-items-center py-1">
+                  <div class="position-relative"><img id="user-avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg" class="mr-1 avatar" alt="Jméno Přijmení"></div>
+                  <div class="flex-grow-1 pl-3">
+                     <strong id="user-name">Jméno Přijmení</strong>
+                     <div id="user-status" class="small"><em>Online</em></div>
+                  </div>
+                  <button class="btn btn-outline-secondary btn-sm btn mr-1 px-3">Odhlásit se</button>           
+               </div>
+            </div>
+            <div class="chat">
+               <div class="message right">
+                  <p class="msg-text">Jakou barvu tyto stíny mají?  </p>   
+                  <div class="small text-muted">18:00</div>
+               </div>
+               <div class="message">
+                  <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg" />
+                  <p class="msg-text">Překvapit by však mohl fakt, že nikdo, snad.</p>
+                  <div class="small text-muted">18:00</div>
+               </div>
+               <div class="message right">
+                  <p class="msg-text">Kdyby pod balónky nebyla sytě zelenkavá tráva, ale třeba suchá silnice či beton, možná by.</p>
+                  <div class="small text-muted">18:00</div>
+               </div>
+               <div class="message">
+                  <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg" />
+                  <p class="msg-text">Jenže kvůli všudy přítomné trávě jsou stíny balónků sotva vidět, natož aby šlo rozeznat, jakou barvu tyto stíny mají. Uvidět tak balónky náhodný kolemjdoucí, jistě by si pomyslel, že už tu takhle poletují snad tisíc let. Stále si víceméně drží výšku a ani do stran se příliš nepohybují. Proti slunci to vypadá, že se slunce pohybuje k západu rychleji než balónky, a možná to tak skutečně je. Nejeden filozof by mohl tvrdit, že balónky se sluncem závodí, ale fyzikové by to jistě vyvrátili. Z fyzikálního pohledu totiž balónky působí zcela nezajímavě. Nejvíc bezpochyby zaujmou děti - jedna malá holčička zrovna včera div nebrečela, že by snad balónky mohly prasknout. A co teprve ta stuha. Stuha, kterou je každý z trojice balónků uvázán, aby se nevypustil. Očividně je uvázaná dostatečně pevně, protože balónky skutečně neucházejí. To ale není nic zvláštního. Překvapit by však mohl fakt, že nikdo, snad krom toho, kdo balónky k obloze vypustil, netuší, jakou má ona stuha barvu.</p>
+                  <div class="small text-muted">18:00</div>
+               </div>
+            </div>
+            <!-- chat end -->
+            <div class="flex-grow-0 py-3 border-top">
+               <div class="input-group"> 
+                  <input id="msgBox" type="text" class="form-control" placeholder="Nová zpráva..." > 
+                  <button class="btn btn-primary"><i class="fa fa-paper-plane"></i></button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+ </main>

@@ -1,0 +1,20 @@
+header
+  .d-flex.align-items-center.py-1
+    .position-relative      
+      img#user-avatar.mr-1.avatar(src= avatar, alt= name)        
+    
+    .flex-grow-1.pl-3
+      strong#user-name= name
+        #user-status.small
+          em= online
+
+    button.btn.btn-sm.btn-outline-secondary.mr-1.px-3
+      i.fas.fa-bars
+  //- switch
+  ul.nav.nav-tabs.justify-content-center
+    li.nav-item
+      a.nav-link.active(href='#') Lide
+    li.nav-item
+      a.nav-link(href='#') Skupiny
+
+#conversation-list

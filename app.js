@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const express = require('express');
+const session = require('express-session');
 const WebSocketServer = require('ws').Server;
 
 // dbs 
@@ -23,7 +24,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-
+//setup
 app.use(favicon(__dirname + '/public/favicon.ico'));
 
 app.use(logger('dev'));
@@ -32,6 +33,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+app.use(session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.SECRET    
+}));
+
+//routes
 app.use('/', routes);
 app.use('/api', apiRouter);
 
@@ -47,7 +56,7 @@ app.use(function (req, res, next) {
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
-        res.render('error', {
+        res.render('errorPage', {
             message: err.message,
             error: err
         });
@@ -57,7 +66,7 @@ if (app.get('env') === 'development') {
 // production error handler, no stacktraces leaked to user
 app.use(function (err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
+    res.render('errorPage', {
         message: err.message,
         error: {}
     });
@@ -96,8 +105,10 @@ let wss = new WebSocketServer({ server: server });
 
 wss.on('connection', function (ws) {
 
-    debug('ws client pripojen');
-  
+    debug('client connect');
+    
+    //todo user list
+         
     // ws prijem 
     ws.on('message', function (message) {
           
@@ -105,6 +116,7 @@ wss.on('connection', function (ws) {
         debug("prijem " + msg.type);
 
         ws.send(JSON.stringify(msg));
+        //todo controller + DB a ssesion + user list conn
 
     });
 

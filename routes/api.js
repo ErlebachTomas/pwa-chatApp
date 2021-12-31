@@ -4,6 +4,8 @@ const router = express.Router();
 
 
 var Message = require('../model/Message');
+var User = require('../model/User');
+var Conversation = require('../model/Conversation');
 
 /* api/... */
 router.post('/', function (req, res) {   
@@ -14,8 +16,19 @@ router.get('/', function (req, res) {
 });
 
 //todo API + apiary.io
+// https://docs.mongodb.com/manual/reference/sql-comparison/#select
 
 
+router.get('/getAllUsers', async (req, res) => {
+
+    try {
+        let data = await User.find({}, { login: 1, name: 1, profilePicture: 1 });
+        res.json(data);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+
+});
 
 // uložit zprávu...
 router.post('/newMessage', async (req, res) => {
@@ -41,5 +54,6 @@ router.get("/conversation/:id", async (req, res) => {
         res.status(500).json(err);
     }
 });
+
 
 module.exports = router;

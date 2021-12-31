@@ -1,0 +1,27 @@
+body {
+    background-color: #ffffff;
+    opacity: 1;
+    background-image: radial-gradient( ellipse farthest-corner at 12px 12px, #f9f9f9, #f9f9f9 50%, #ffffff 50%);
+    background-size: 12px 12px;
+
+    padding: 1em;
+}
+
+.form-signin {
+    margin: 0 auto;
+    margin-bottom: 10px;
+    max-width: 350px;
+    padding: 20px;
+}
+
+    .form-signin .form-control {
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+
+    .form-signin input, .form-signin button {
+        margin-bottom: 10px;
+        border-radius: 0;
+    }
