@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 const dotenv = require('dotenv').config();
 const debug = require('debug')('myApp');
 const path = require('path');
@@ -87,8 +87,6 @@ mongoose.connect(mongoDBUrl);
 mongoose.Promise = global.Promise;
    
 
-
-
 // Server  
 app.set('port', process.env.PORT || 3000);
 
@@ -102,25 +100,54 @@ server.listen(app.get('port'), function () {
 
 // WebSocketServer
 let wss = new WebSocketServer({ server: server });
+const online = new Map(); // online ws user list 
 
 wss.on('connection', function (ws) {
 
     debug('client connect');
-    
-    //todo user list
-         
+                 
     // ws prijem 
     ws.on('message', function (message) {
           
         let msg = JSON.parse(message.toString());
         debug("prijem " + msg.type);
 
-        ws.send(JSON.stringify(msg));
+
+        switch (msg.type) {
+
+            case "init":
+                ws.id = msg.username;
+                online.set(ws.id, ws);
+                debug("id " + ws.id);
+                break;
+
+            default:
+                ws.send(JSON.stringify(msg));
+        }
+            
+        
         //todo controller + DB a ssesion + user list conn
 
     });
 
     ws.on('close', function () {
-        debug("connection closed");
+
+        online.delete(ws.id);
+        debug("connection closed " + ws.id);
     })
 });
+
+
+/**
+ * Odešle data příslušnému clienovi 
+ * @param {any} username unikatni id uživatele
+ * @param {any} data json
+ */
+function sendData(username, data) {
+
+    let ws = online.get(username);
+
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(data);
+    }        
+}

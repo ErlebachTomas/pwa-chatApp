@@ -1,7 +1,7 @@
 ﻿'use strict';
 const express = require('express');
 const router = express.Router();
-
+const controller = require('../controller/chatController');
 
 var Message = require('../model/Message');
 var User = require('../model/User');
@@ -15,20 +15,7 @@ router.get('/', function (req, res) {
     res.send(req.body);
 });
 
-//todo API + apiary.io
-// https://docs.mongodb.com/manual/reference/sql-comparison/#select
-
-
-router.get('/getAllUsers', async (req, res) => {
-
-    try {
-        let data = await User.find({}, { login: 1, name: 1, profilePicture: 1 });
-        res.json(data);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-
-});
+router.get('/getAllUsers', controller.getAllUsers );
 
 // uložit zprávu...
 router.post('/newMessage', async (req, res) => {

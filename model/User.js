@@ -17,6 +17,9 @@ let UserSchema = new mongoose.Schema({
         },
         profilePicture: {
             type: String,
+        },
+        status: {
+            type: String,
         }
 
 });

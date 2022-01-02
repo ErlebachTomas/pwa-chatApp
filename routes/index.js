@@ -6,6 +6,8 @@ const ObjectId = require('mongodb').ObjectId;
 const debug = require('debug')('myApp');
 const User = require("../model/User");
 
+
+const controller = require('../controller/chatController');
 /* Login */ 
 router.get('/login', function (req, res) {
     res.render('loginFormPage', { title: 'Přihlášení' });
@@ -42,13 +44,15 @@ router.get('/', async function (req, res) {
         
         let oid = new ObjectId(req.session.userId);      
         let user = await User.findOne({ _id: oid }, {}).lean();
-        /* todo render */ 
+          
+        /* todo render */
         res.render('chatPage', {
             authorised: true,
             title: 'Chat app',
+            login: user.login,
             avatar: user.profilePicture,
-            name: user.name,
-            online: 'před 50 minutami'
+            name: user.name,            
+            online: user.status
         });
 
     } else {
