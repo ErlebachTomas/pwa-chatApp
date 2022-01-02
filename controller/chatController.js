@@ -1,4 +1,4 @@
-const  Message = require('../model/Message');
+Ôªøconst  Message = require('../model/Message');
 const  User = require('../model/User');
 const  Conversation = require('../model/Conversation');
 
@@ -7,7 +7,7 @@ const  Conversation = require('../model/Conversation');
 
 
 /**
- * Vr·tÌ seznam vöech uûivatel˘ (username, jmÈno, avatar)
+ * Vr√°t√≠ seznam v≈°ech u≈æivatel≈Ø (username, jm√©no, avatar)
  * @param {any} req
  * @param {any} res
  */
@@ -23,16 +23,16 @@ exports.getAllUsers = async function (req, res) {
 };
 
 /**
- * Seznam kontakt˘ 
+ * Seznam kontakt≈Ø 
  * @param {any} username id
  */
 exports.getUserContactList = async function (username) {
 
     let contactList = await User.find(
         { login: { $ne: username } },
-        { login: 1, name: 1, profilePicture: 1 }).lean();
+        { login: 1, name: 1, profilePicture: 1, status: 1 }).lean();
     
     return contactList;
 }
 
-// findConversation id1, id2
+

@@ -4,6 +4,7 @@ const debug = require('debug')('myApp');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
+const ObjectId = require('mongodb').ObjectId;
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
@@ -107,27 +108,46 @@ wss.on('connection', function (ws) {
     debug('client connect');
                  
     // ws prijem 
-    ws.on('message', function (message) {
+    ws.on('message', async function (message) {
           
-        let msg = JSON.parse(message.toString());
-        debug("prijem " + msg.type);
+        let data = JSON.parse(message.toString());
+        debug("prijem " + data.type);
 
 
-        switch (msg.type) {
+        switch (data.type) {
 
             case "init":
-                ws.id = msg.username;
+                ws.id = data.username;
                 online.set(ws.id, ws);
                 debug("id " + ws.id);
                 break;
+            case "text":
+                try {
+                    let cid = new ObjectId(data.msg.conversation);
+                    let sid = new ObjectId(data.msg.sender);
 
+                    let newMsg = new Message({
+                        message: data.msg.text,
+                        type: data.msg.type,
+                        timestamp: data.msg.time,
+                        conversation: cid,
+                        sender: sid
+                    });
+                
+                    savedMsg = await newMsg.save(); //todo ošetření? 
+                    //todo odeslat ws příjemcům 
+
+
+                } catch (err) {
+                    debug(err);
+                }
+
+                break;
             default:
-                ws.send(JSON.stringify(msg));
+                ws.send(JSON.stringify(data));
         }
             
         
-        //todo controller + DB a ssesion + user list conn
-
     });
 
     ws.on('close', function () {

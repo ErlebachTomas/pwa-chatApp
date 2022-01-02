@@ -1,6 +1,10 @@
 ﻿/* 
     Created on : 27.12.2021, 21:15:51   
 */
+.active {
+    font-style: italic;
+
+}
 
 .content {
     margin: auto;

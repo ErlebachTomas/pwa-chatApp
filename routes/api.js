@@ -7,6 +7,7 @@ var Message = require('../model/Message');
 var User = require('../model/User');
 var Conversation = require('../model/Conversation');
 
+const debug = require('debug')('myApp');
 /* api/... */
 router.post('/', function (req, res) {   
     res.send({ "req.body": req.body }); //pro kontrolu
@@ -16,6 +17,13 @@ router.get('/', function (req, res) {
 });
 
 router.get('/getAllUsers', controller.getAllUsers );
+
+router.get('/getUserContactList', async function (req, res) {
+    let username = req.query.username;
+    let contactList = await controller.getUserContactList(username);
+    
+    res.json(contactList);
+});
 
 // uložit zprávu...
 router.post('/newMessage', async (req, res) => {
@@ -31,7 +39,35 @@ router.post('/newMessage', async (req, res) => {
 
 });
 
-// todo načíst zprávy (ošetření ?)
+router.get('/conversation', async function (req, res) {
+
+   /*  req.query.username,
+       req.query.participant
+   */
+    try {
+        let conversation = await Conversation.findOne({
+            participants: { $all: [req.query.username, req.query.participant] },
+        });
+
+        if (conversation == null) {
+            // pokud ještě neexistuje založí novou 
+            conversation = new Conversation({ participants: [req.query.username, req.query.participant] });
+            await conversation.save();
+        }
+
+        let messages = await Message.find({ "_id": conversation._id });
+
+        res.json({ conversation: conversation, messages: messages });
+
+        
+    } catch (err) {
+        res.status(500).json(err);
+    }
+    
+});
+
+
+// todo smazat?
 router.get("/conversation/:id", async (req, res) => {
     try {
         let query = { "_id": req.params.id };
