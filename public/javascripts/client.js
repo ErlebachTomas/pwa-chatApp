@@ -24,6 +24,9 @@ ws.addEventListener('open', (event) => {
 ws.addEventListener('message', (event) => {
     console.log('příchozí data: ', event.data);
    // todo zpracovaní zpráv
+
+
+
 });
 
 // main
@@ -37,9 +40,8 @@ $(document).ready(function () {
     });
 
 
-    // načtení předchozích zpráv z vlákna
-    //$('#conversation-list > a').on("click", loadConversation(this));
-    //loadConversation($('#conversation-list > a').first());
+    // načtení předchozích zpráv z vlákna 
+    loadConversation($('#conversation-list > a').first());
 
     $(document).on("click", '#conversation-list > a', function () {
         console.log("click");
@@ -47,33 +49,6 @@ $(document).ready(function () {
     });
 
    
-    $('#conversation-list > a').on("click", function () {
-        console.log("on ok");
-        // todo debug onclick
-
-        /*
-        $('#conversation-list > a').removeClass("active");
-        $(domElement).addClass("active");
-
-        let username = $("#user-name").data("username");
-        let participant = $(this).data("username");
-
-        $("#participant-avatar").val($(this).find('img').attr('src'));;
-        $("#participant-name").val($(this).data("name"));
-        $("#participant-status").val($(this).data("status"));
-
-        $.getJSON("api/conversation", { username: username, participant: participant },
-            function (data) {
-                console.log(data); //todo load msg
-               // $(this).data("conversation").val(data.)
-                
-            });
-
-        */
-
-    });
-    
-
 
     $("#sendBox").submit(function (event) {
         //odeslání zprávy
@@ -85,7 +60,7 @@ $(document).ready(function () {
         let sender = $("#user-name").data("username");
 
         //conversation = "61d21b2ad46107d64a3594cc"; //todo odstranit!!!
-        console.log(conversation,time);
+        console.log(conversation,time); // todo time
 
         let msg = {
             message: text,
@@ -125,8 +100,8 @@ function loadConversation(domElement) {
         function (data) {
             console.log(data); //get list msg
 
-            $("#user-name").data("conversation", data.conversation._id );
-               
+            $("#participant-name").data("conversation", data.conversation._id );
+            LoadMessage(username,data.messages)
 
             //todo loadMSG()
             //loadMSG(username,)
@@ -136,8 +111,25 @@ function loadConversation(domElement) {
         });
 }
 
-function LoadMessage(data) {
-    //todo vytřídit
+function LoadMessage(username,arr) {
+      
+    arr.forEach((item) => {
+        console.log("load msg", item.sender, username );
+        if (item.sender == username) {
+
+            myMessage({ msg: item.message, time: item.time });               
+
+        } else {
+            let url = $("#participant-avatar").attr("src");
+            receivedMessage({
+                name: item.sender,
+                profilePicture: url,
+                msg: item.message,
+                time: item.time
+            });
+        }
+    });
+
 }
 
 
@@ -152,11 +144,11 @@ function receivedMessage(data) {
     </div>
     `;
 
-    $('.chat').append([data].map(list).join(''));
+    $('#chat').append([data].map(list).join(''));
 }
 
 function myMessage(data) {
-
+   
     const list = ({ msg, time }) => `
     <div class="message right">        
         <p class="msg-text">${msg}</p>
@@ -164,7 +156,7 @@ function myMessage(data) {
     </div>
     `;
 
-    $('.chat').append([data].map(list).join(''));
+    $('#chat').append([data].map(list).join(''));
 }
 
 

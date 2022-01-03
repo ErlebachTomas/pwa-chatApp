@@ -55,11 +55,10 @@ router.get('/conversation', async function (req, res) {
             conversation = new Conversation({ participants: [req.query.username, req.query.participant] });
             await conversation.save();
         }
-
-        let cid = new ObjectId(conversation._id);
-        let messages = await Message.find({ "conversation": cid });
-
-        dubug(messages);
+                
+        debug("cid: " + conversation._id);
+        let cid = conversation._id;
+        let messages = await Message.find({ "conversation": cid });              
 
         res.json({ conversation: conversation, messages: messages });
 
@@ -70,26 +69,13 @@ router.get('/conversation', async function (req, res) {
     
 });
 
-
+//todo smazat
 router.get("/msg/:id", async (req, res) => {
-
-    try {
-
-        let cid = new ObjectId(req.params.id);
-        let messages = await Message.find({ "conversation": cid });
-
-        dubug(cid);
-        dubug(messages);
-
-        res.json({ messages: messages });
-
-
-    } catch (err) {
-        res.status(500).json(err);
-    }
+     let ci = req.params.id
+     let messages = await Message.find({ "conversation": ci });    
+     res.json({ messages: messages });
 
 });
-
 
 // todo smazat?
 router.get("/conversation/:id", async (req, res) => {

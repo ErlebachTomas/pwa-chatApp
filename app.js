@@ -127,7 +127,8 @@ wss.on('connection', function (ws) {
                 break;
             case "text":
                 try {
-                    let cid = new ObjectId(data.msg.conversation);
+                    //let cid = new ObjectId(data.msg.conversation);
+                    let cid = data.msg.conversation;
                     let sid = data.msg.sender; //username 
                     debug(data.msg);
 

@@ -10,7 +10,7 @@ let messageSchema = new mongoose.Schema({
     timestamp: Date,
 
     conversation: {
-        type: mongoose.ObjectId,
+        type: String,
         required: true
     },
     sender: {
