@@ -38,9 +38,42 @@ $(document).ready(function () {
 
 
     // načtení předchozích zpráv z vlákna
-    $('#conversation-list > a').on("click", loadConversation(this));
+    //$('#conversation-list > a').on("click", loadConversation(this));
+    //loadConversation($('#conversation-list > a').first());
 
-    loadConversation($('#conversation-list > a').first());
+    $(document).on("click", '#conversation-list > a', function () {
+        console.log("click");
+        loadConversation($(this));
+    });
+
+   
+    $('#conversation-list > a').on("click", function () {
+        console.log("on ok");
+        // todo debug onclick
+
+        /*
+        $('#conversation-list > a').removeClass("active");
+        $(domElement).addClass("active");
+
+        let username = $("#user-name").data("username");
+        let participant = $(this).data("username");
+
+        $("#participant-avatar").val($(this).find('img').attr('src'));;
+        $("#participant-name").val($(this).data("name"));
+        $("#participant-status").val($(this).data("status"));
+
+        $.getJSON("api/conversation", { username: username, participant: participant },
+            function (data) {
+                console.log(data); //todo load msg
+               // $(this).data("conversation").val(data.)
+                
+            });
+
+        */
+
+    });
+    
+
 
     $("#sendBox").submit(function (event) {
         //odeslání zprávy
@@ -48,8 +81,11 @@ $(document).ready(function () {
 
         let text = $('#msgBox').val();
         let time = new Date();
-        let conversation = "id";
-        let sender = "id";
+        let conversation = $("#user-name").data("conversation");
+        let sender = $("#user-name").data("username");
+
+        //conversation = "61d21b2ad46107d64a3594cc"; //todo odstranit!!!
+        console.log(conversation,time);
 
         let msg = {
             message: text,
@@ -70,37 +106,67 @@ $(document).ready(function () {
 });
 
 function loadConversation(domElement) {
-    console.log("ok");
+    
 
     $('#conversation-list > a').removeClass("active");
     $(domElement).addClass("active");
 
     let username = $("#user-name").data("username");
     let participant = $(domElement).data("username");
+      
+    $("#participant-avatar").attr("src", $(domElement).find('img').attr('src'));
+    $("#participant-avatar").attr("alt", $(domElement).find('img').attr('alt'));;
 
-    $("#participant-avatar").val($(domElement).find('img').attr('src'));;
-    $("#participant-name").val($(domElement).data("name"));
-    $("participant-status").val($(domElement).data("status"));
+    $("#participant-name").text($(domElement).data("name"));
+    $("#participant-status").text($(domElement).data("status"));
+
 
     $.getJSON("api/conversation", { username: username, participant: participant },
         function (data) {
-            console.log(data); //todo load msg
+            console.log(data); //get list msg
+
+            $("#user-name").data("conversation", data.conversation._id );
+               
+
+            //todo loadMSG()
+            //loadMSG(username,)
+            //img vzít zatím zeshora? 
+            //rozstřídit a vykresit 
+            // a pak ještě live z ws 
         });
 }
 
+function LoadMessage(data) {
+    //todo vytřídit
+}
 
-function receivedMessage(sender, msg) {
+
+
+function receivedMessage(data) {
   
-    const list = ({name, profilePicture, time }) => `
-    <div class="message right">
+    const list = ({ name, profilePicture, msg, time }) => `
+    <div class="message ">
         <img class="avatar" src="${profilePicture}" alt="${name}" />
         <p class="msg-text">${msg}</p>
         <div class="small text-muted">${time}</div>
     </div>
     `;
 
-    $('.chat').append([item].map(list).join(''));
+    $('.chat').append([data].map(list).join(''));
 }
+
+function myMessage(data) {
+
+    const list = ({ msg, time }) => `
+    <div class="message right">        
+        <p class="msg-text">${msg}</p>
+        <div class="small text-muted">${time}</div>
+    </div>
+    `;
+
+    $('.chat').append([data].map(list).join(''));
+}
+
 
 
 /**
@@ -120,8 +186,8 @@ function renderUsersList(data) {
 function renderUsersCard(item) {
     
     // https://stackoverflow.com/a/39065147
-    const list = ({ username, name, profilePicture, status }) => `
-     <a href="#" data-username="${username}" data-name="${name}"data-status="${status}" class="list-group-item list-group-item-action border-0">
+    const list = ({ login, name, profilePicture, status }) => `
+     <a href="#" data-username="${login}" data-name="${name}"data-status="${status}" data-conversation="" class="conversation list-group-item list-group-item-action border-0">
         <div class="d-flex align-items-start">
             <img src="${profilePicture}" alt="${name}" class="avatar">
                 <div class="flex-grow-1 ml-3">

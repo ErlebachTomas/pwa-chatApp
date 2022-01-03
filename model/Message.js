@@ -14,9 +14,9 @@ let messageSchema = new mongoose.Schema({
         required: true
     },
     sender: {
-        type: mongoose.ObjectId,
+        type: String,
         required: true
-    },
+    }, // login username
       
 });
 

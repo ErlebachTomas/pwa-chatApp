@@ -19,6 +19,10 @@ const mongoose = require('mongoose');
 var routes = require('./routes/index');
 var apiRouter = require('./routes/api');
 
+var Message = require('./model/Message');
+var User = require('./model/User');
+var Conversation = require('./model/Conversation');
+
 var app = express();
 
 // view engine setup
@@ -124,20 +128,23 @@ wss.on('connection', function (ws) {
             case "text":
                 try {
                     let cid = new ObjectId(data.msg.conversation);
-                    let sid = new ObjectId(data.msg.sender);
+                    let sid = data.msg.sender; //username 
+                    debug(data.msg);
 
                     let newMsg = new Message({
-                        message: data.msg.text,
+                        message: data.msg.message,
                         type: data.msg.type,
                         timestamp: data.msg.time,
                         conversation: cid,
                         sender: sid
                     });
                 
-                    savedMsg = await newMsg.save(); //todo ošetření? 
-                    //todo odeslat ws příjemcům 
+                    let savedMsg = await newMsg.save(); //todo ošetření? 
+                    //debug(savedMsg);
 
+                    //todo odeslat ws příjemcům
 
+                    //z konverzace seznam lidi a tam poslat 
                 } catch (err) {
                     debug(err);
                 }
