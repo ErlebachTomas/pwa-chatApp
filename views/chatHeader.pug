@@ -5,7 +5,7 @@
           img#participant-avatar.mr-1.avatar(src= avatar, alt= name)
         
         .flex-grow-1.pl-3
-          strong#participant-name= name
+          strong#participant-name(data-username= login, data-conversation="")= name
           #participant-status.small
             em= online
         

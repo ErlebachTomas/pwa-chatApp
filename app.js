@@ -22,6 +22,8 @@ var apiRouter = require('./routes/api');
 var Message = require('./model/Message');
 var User = require('./model/User');
 var Conversation = require('./model/Conversation');
+var controller = require('./controller/chatController');
+
 
 var app = express();
 
@@ -126,10 +128,10 @@ wss.on('connection', function (ws) {
                 debug("id " + ws.id);
                 break;
             case "text":
-                try {
-                    //let cid = new ObjectId(data.msg.conversation);
+                try {                   
                     let cid = data.msg.conversation;
                     let sid = data.msg.sender; //username 
+
                     debug(data.msg);
 
                     let newMsg = new Message({
@@ -141,11 +143,9 @@ wss.on('connection', function (ws) {
                     });
                 
                     let savedMsg = await newMsg.save(); //todo ošetření? 
-                    //debug(savedMsg);
-
-                    //todo odeslat ws příjemcům
-
-                    //z konverzace seznam lidi a tam poslat 
+                    debug("přeposílám dál...");
+                    sendDatatoParticipants(cid, data.msg);
+                                        
                 } catch (err) {
                     debug(err);
                 }
@@ -167,15 +167,42 @@ wss.on('connection', function (ws) {
 
 
 /**
- * Odešle data příslušnému clienovi 
+ z konverzace vezme seznam lidi a pokud jsou online pošle přes ws 
+ * @param {any} cid
+ * @param {any} msg
+ */
+async function sendDatatoParticipants(cid, msg) {
+
+    let conv = await controller.getConversation(cid);
+    let participants = conv.participants;
+
+    debug(participants);
+
+    participants.forEach(function (user, index) {
+
+        if (online.has(user)) {
+            debug("posílám " + user);
+            sendData(user, msg);
+        } else {
+            debug(user + " je offline");
+        }
+    });
+
+}
+
+
+
+/**
+ * Odešle data příslušnému clienovi jako json
  * @param {any} username unikatni id uživatele
- * @param {any} data json
+ * @param {any} data data
  */
 function sendData(username, data) {
 
     let ws = online.get(username);
 
-    if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(data);
+    //todo && ws.readyState === WebSocket.OPEN
+    if (ws) {
+        ws.send(JSON.stringify(data));
     }        
 }

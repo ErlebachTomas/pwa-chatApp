@@ -1,6 +1,8 @@
 ﻿const  Message = require('../model/Message');
 const  User = require('../model/User');
 const  Conversation = require('../model/Conversation');
+const ObjectId = require('mongodb').ObjectId;
+
 
 //todo API + apiary.io
 // https://docs.mongodb.com/manual/reference/sql-comparison/#select
@@ -35,4 +37,15 @@ exports.getUserContactList = async function (username) {
     return contactList;
 }
 
+/**
+ * Seznam účastníků konverzace 
+ * @param {String} cid id konverzace
+ */
+exports.getConversation = async function (id) {
+
+    let cid = new ObjectId(id);
+    let conversation = await Conversation.findOne({ _id: cid }, {}).lean();
+
+    return conversation;
+}
 
