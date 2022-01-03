@@ -132,7 +132,7 @@ wss.on('connection', function (ws) {
                     let cid = data.msg.conversation;
                     let sid = data.msg.sender; //username 
 
-                    debug(data.msg);
+                    debug(data.msg); //todo time bug fix
 
                     let newMsg = new Message({
                         message: data.msg.message,
