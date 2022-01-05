@@ -81,7 +81,7 @@ app.use(function (err, req, res, next) {
 
 
 // mongoose setup
-let local = true //todo upravit
+let local = false; //todo upravit
 let mongoDBUrl;
 
 if (local) {

@@ -27,8 +27,14 @@ router.get('/getUserContactList', async function (req, res) {
 
 // uložit zprávu...
 router.post('/newMessage', async (req, res) => {
-    const { message } = req.body;
-    let msg = new Message({ message });
+
+    //const { message } = req.body;
+    const message  = { message: "sf",
+        conversation: "dfgd",
+        sender: "fg"
+    };
+    
+    let msg = new Message( message );
     try {
         savedMsg = await msg.save();
         res.json(savedMsg);

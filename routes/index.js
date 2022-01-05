@@ -19,10 +19,16 @@ router.post('/login', async function (req, res) {
     let id = req.body.login;
     let psw = req.body.password;
 
-    debug(id, psw);
+    debug(id);
+
+
 
     let user = await User.findOne({ login: id }, {}).lean(); // lean convertuje js object
-  
+
+
+   
+
+
     if (user != null && psw === user.password) {
         // todo pass check cryp
         req.session.userId = user._id.toString();
