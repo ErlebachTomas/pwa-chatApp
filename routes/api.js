@@ -8,12 +8,16 @@ var User = require('../model/User');
 var Conversation = require('../model/Conversation');
 
 const debug = require('debug')('myApp');
+var mongoose = require('mongoose');
+
+
 /* api/... */
 router.post('/', function (req, res) {   
     res.send({ "req.body": req.body }); //pro kontrolu
 });
 router.get('/', function (req, res) {
     res.send(req.body);
+   
 });
 
 router.get('/getAllUsers', controller.getAllUsers );
@@ -28,12 +32,17 @@ router.get('/getUserContactList', async function (req, res) {
 // uložit zprávu...
 router.post('/newMessage', async (req, res) => {
 
-    //const { message } = req.body;
-    const message  = { message: "sf",
-        conversation: "dfgd",
-        sender: "fg"
-    };
-    
+    const { message } = req.body;
+    /*
+    const message = {
+        message: "zprava",
+        type: "text",
+        conversation: "cid",
+        sender: "sid"
+    }; */
+
+    //debug(mongoose.connection.readyState); //https://stackoverflow.com/a/19606067
+
     let msg = new Message( message );
     try {
         savedMsg = await msg.save();
