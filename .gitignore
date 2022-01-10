@@ -1,10 +1,10 @@
 node_modules
 pwa-chatApp.njsproj
 pwa-chatApp.njsproj.user
-<<<<<<< Updated upstream
-=======
 .env
 obj
 bin
 start Nodemon liveServer.bat
->>>>>>> Stashed changes
+heroku
+heroku.pub
+
