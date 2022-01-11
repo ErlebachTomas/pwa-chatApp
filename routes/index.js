@@ -18,16 +18,15 @@ router.post('/login', async function (req, res) {
         
     let id = req.body.login;
     let psw = req.body.password;
-
-    debug(id, psw);
-
+      
     let user = await User.findOne({ login: id }, {}).lean(); // lean convertuje js object
-    let pswCheck = controller.compare(psw, user.password);
 
-    debug( pswCheck, psw, user.password);
-
-
-    if (user != null && pswCheck) {
+    let pswCheck = false;
+    if (user != null) {
+        pswCheck = controller.compare(psw, user.password);
+    }
+     
+    if (pswCheck) {
         
         req.session.userId = user._id.toString();
 
@@ -49,7 +48,6 @@ router.get('/', async function (req, res) {
         let oid = new ObjectId(req.session.userId);      
         let user = await User.findOne({ _id: oid }, {}).lean();
           
-        /* todo render */
         res.render('chatPage', {
             authorised: true,
             title: 'Chat app',

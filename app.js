@@ -124,7 +124,7 @@ wss.on('connection', function (ws) {
 
             case "init":
                 ws.id = data.username;
-                online.set(ws.id, ws);
+                online.set(ws.id, ws);              
                 debug("id " + ws.id);
                 break;
             case "text":
@@ -158,8 +158,7 @@ wss.on('connection', function (ws) {
         
     });
 
-    ws.on('close', function () {
-
+    ws.on('close', function () {      
         online.delete(ws.id);
         debug("connection closed " + ws.id);
     })

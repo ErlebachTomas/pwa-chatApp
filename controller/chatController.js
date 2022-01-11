@@ -35,7 +35,6 @@ exports.getUserContactList = async function (username) {
     
     return contactList;
 }
-
 /**
  * Seznam účastníků konverzace
  * @param {String} cid id konverzace
