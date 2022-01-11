@@ -50,8 +50,8 @@ ws.addEventListener('message', (event) => {
             });
         }
     } else {
-      
-     //$('#conversation-list').find(`[data-username='odr']`).addClass('newMassageAlert');
+
+     // pokud přijatá zpráva není z otevřené konverzace
      $('#conversation-list > a').find(`[data-username='${data.sender}']`).addClass('newMassageAlert');
         
     }
@@ -80,7 +80,7 @@ $(document).ready(function () {
         console.log(conID);
 
         $(this).removeClass('newMassageAlert');
-        loadConversation($(this));
+        changeConversation($(this));
     });
 
    
@@ -88,15 +88,13 @@ $(document).ready(function () {
     $("#sendBox").submit(function (event) {
         //odeslání zprávy
         event.preventDefault();
-
-        
+                
         let text = $('#msgBox').val();
         let time = new Date();
-        //let conversation = $("#user-name").data("conversation");
+   
         let conversation = conID;
         let sender = $("#user-name").data("username");
 
-        //conversation = "61d21b2ad46107d64a3594cc"; //todo odstranit!!!
         console.log(conversation,time); // todo time
 
         let msg = {
@@ -118,9 +116,12 @@ $(document).ready(function () {
 
 });
 
-function loadConversation(domElement) {
+/**
+ * Realizuje přepnutí konverzace, překreslí okno a načte příslušné zprávy 
+ * @param {any} domElement
+ */
+function changeConversation(domElement) {
     
-
     $('#conversation-list > a').removeClass("active");
     $(domElement).addClass("active");
 
@@ -136,6 +137,15 @@ function loadConversation(domElement) {
     $("#participant-name").text($(domElement).data("name"));
     $("#participant-status").text($(domElement).data("status"));
 
+    loadConversation(username, participant);    
+}
+
+/**
+ * Načte zprávy ze serveru
+ * @param {String} username přihlášený uživatel
+ * @param {String} participant 
+ */
+function loadConversation(username, participant) {
 
     $.getJSON("api/conversation", { username: username, participant: participant },
         function (data) {
@@ -144,15 +154,20 @@ function loadConversation(domElement) {
             conID = data.conversation._id; // todo data
             activeParticipants = data.conversation.participants;
 
-            console.log("coi:" + data.conversation._id, activeParticipants );
-           
+            console.log("coi:" + data.conversation._id, activeParticipants);
 
-            $("#participant-name").data("conversation", data.conversation._id );
-            LoadMessage(username,data.messages)
+            $("#participant-name").data("conversation", data.conversation._id);
+            LoadMessage(username, data.messages)
 
         });
+
 }
 
+/**
+ * Rozstřídí zprávy podle odesílatele a vykreslí je na stránku
+ * @param {String} username přihlášený uživatel
+ * @param {Array} arr pole zpráv
+ */
 function LoadMessage(username,arr) {
 
     $('#chat').empty();
@@ -180,7 +195,10 @@ function LoadMessage(username,arr) {
 }
 
 
-
+/**
+ * Šablona pro cizí zprávu
+ * @param {any} data
+ */
 function receivedMessage(data) {
   
     const list = ({ name, profilePicture, msg, time }) => `
@@ -193,7 +211,10 @@ function receivedMessage(data) {
 
     $('#chat').append([data].map(list).join(''));
 }
-
+/**
+ * Šablona pro zprávu přihlášeného uživatele 
+ * @param {any} data
+ */
 function myMessage(data) {
    
     const list = ({ msg, time }) => `
@@ -210,7 +231,7 @@ function myMessage(data) {
 
 /**
  * Vykreslí list kontaktů
- * @param {any} data
+ * @param {Array} data
  */
 function renderUsersList(data) {
     data.forEach((item) => {
@@ -223,8 +244,7 @@ function renderUsersList(data) {
  * @param {any} item
  */
 function renderUsersCard(item) {
-    
-    // https://stackoverflow.com/a/39065147
+       
     const list = ({ login, name, profilePicture, status }) => `
      <a href="#" data-username="${login}" data-name="${name}"data-status="${status}" class="conversation list-group-item list-group-item-action border-0">
         <div class="d-flex align-items-start">

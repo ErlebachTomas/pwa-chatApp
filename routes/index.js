@@ -22,16 +22,20 @@ router.post('/login', async function (req, res) {
     debug(id, psw);
 
     let user = await User.findOne({ login: id }, {}).lean(); // lean convertuje js object
-  
-    if (user != null && psw === user.password) {
-        // todo pass check cryp
+    let pswCheck = controller.compare(psw, user.password);
+
+    debug( pswCheck, psw, user.password);
+
+
+    if (user != null && pswCheck) {
+        
         req.session.userId = user._id.toString();
 
         res.redirect("/");
 
     } else {
-        res.json({ psw: "wrong" });
-        
+       // res.json({ psw: "wrong" });
+       res.redirect("/login");
     }
 
       
@@ -69,12 +73,6 @@ router.get('/logout', function (req, res) {
 
     res.redirect("/login");
 
-});
-
-
-/* CSS demo todo odstranit */
-router.get('/demo', function (req, res) {
-    res.render('demoPage', { title: 'CSS demo' });
 });
 
 module.exports = router;

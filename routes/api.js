@@ -8,12 +8,13 @@ var User = require('../model/User');
 var Conversation = require('../model/Conversation');
 
 const debug = require('debug')('myApp');
+
 /* api/... */
 router.post('/', function (req, res) {   
     res.send({ "req.body": req.body }); //pro kontrolu
 });
 router.get('/', function (req, res) {
-    res.send(req.body);
+    res.send(req.body);    
 });
 
 router.get('/getAllUsers', controller.getAllUsers );
@@ -69,24 +70,10 @@ router.get('/conversation', async function (req, res) {
     
 });
 
-//todo smazat
-router.get("/msg/:id", async (req, res) => {
-     let ci = req.params.id
-     let messages = await Message.find({ "conversation": ci });    
-     res.json({ messages: messages });
 
+router.get("/hash/:psw", async (req, res) => {
+    let hash = controller.hash(req.params.psw);
+    res.send({"psw": hash });
 });
-
-// todo smazat?
-router.get("/conversation/:id", async (req, res) => {
-    try {
-        let query = { "_id": req.params.id };
-        let messages = await Message.find(query);
-        res.json(messages);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
-
 
 module.exports = router;

@@ -81,7 +81,7 @@ app.use(function (err, req, res, next) {
 
 
 // mongoose setup
-let local = true //todo upravit
+let local = false;
 let mongoDBUrl;
 
 if (local) {
@@ -201,7 +201,6 @@ function sendData(username, data) {
 
     let ws = online.get(username);
 
-    //todo && ws.readyState === WebSocket.OPEN
     if (ws) {
         ws.send(JSON.stringify(data));
     }        
