@@ -6,4 +6,4 @@ obj
 bin
 start Nodemon liveServer.bat
 tests.bat
-
+coverage
