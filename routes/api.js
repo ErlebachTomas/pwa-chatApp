@@ -8,16 +8,13 @@ var User = require('../model/User');
 var Conversation = require('../model/Conversation');
 
 const debug = require('debug')('myApp');
-var mongoose = require('mongoose');
-
 
 /* api/... */
 router.post('/', function (req, res) {   
     res.send({ "req.body": req.body }); //pro kontrolu
 });
 router.get('/', function (req, res) {
-    res.send(req.body);
-   
+    res.send(req.body);    
 });
 
 router.get('/getAllUsers', controller.getAllUsers );
@@ -31,19 +28,8 @@ router.get('/getUserContactList', async function (req, res) {
 
 // uložit zprávu...
 router.post('/newMessage', async (req, res) => {
-
     const { message } = req.body;
-    /*
-    const message = {
-        message: "zprava",
-        type: "text",
-        conversation: "cid",
-        sender: "sid"
-    }; */
-
-    //debug(mongoose.connection.readyState); //https://stackoverflow.com/a/19606067
-
-    let msg = new Message( message );
+    let msg = new Message({ message });
     try {
         savedMsg = await msg.save();
         res.json(savedMsg);
@@ -84,24 +70,10 @@ router.get('/conversation', async function (req, res) {
     
 });
 
-//todo smazat
-router.get("/msg/:id", async (req, res) => {
-     let ci = req.params.id
-     let messages = await Message.find({ "conversation": ci });    
-     res.json({ messages: messages });
 
+router.get("/hash/:psw", async (req, res) => {
+    let hash = controller.hash(req.params.psw);
+    res.send({"psw": hash });
 });
-
-// todo smazat?
-router.get("/conversation/:id", async (req, res) => {
-    try {
-        let query = { "_id": req.params.id };
-        let messages = await Message.find(query);
-        res.json(messages);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
-
 
 module.exports = router;

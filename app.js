@@ -81,7 +81,7 @@ app.use(function (err, req, res, next) {
 
 
 // mongoose setup
-let local = false; //todo upravit
+let local = false;
 let mongoDBUrl;
 
 if (local) {
@@ -102,7 +102,6 @@ const server = require('http').createServer(app);
 server.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
     debug('DB:' + mongoDBUrl);
-    
 });
 
 
@@ -125,7 +124,7 @@ wss.on('connection', function (ws) {
 
             case "init":
                 ws.id = data.username;
-                online.set(ws.id, ws);
+                online.set(ws.id, ws);              
                 debug("id " + ws.id);
                 break;
             case "text":
@@ -159,8 +158,7 @@ wss.on('connection', function (ws) {
         
     });
 
-    ws.on('close', function () {
-
+    ws.on('close', function () {      
         online.delete(ws.id);
         debug("connection closed " + ws.id);
     })
@@ -202,7 +200,6 @@ function sendData(username, data) {
 
     let ws = online.get(username);
 
-    //todo && ws.readyState === WebSocket.OPEN
     if (ws) {
         ws.send(JSON.stringify(data));
     }        

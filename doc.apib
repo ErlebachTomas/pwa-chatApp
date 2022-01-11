@@ -1,0 +1,50 @@
+FORMAT: 1A
+HOST: https://polls.apiblueprint.org/
+
+# Chatovací aplikace
+Api pro jednoduchou chatovací aplikaci
+
+Tomáš Erlebach
+
+## Api [/api]
+
+### Test připojení  [GET]
++ Request (application/json)
+        {"test": "test"} 
++ Response 200 (application/json)
+
+        {
+            "test": "test"
+        }
+ 
+## Uživatelé [/api/getAllUsers]
+
+
+### List všech uživatelů [GET]
+
++ Response 200 (application/json)
+
+        {
+            [
+              {
+                _id: "61cf4309c5e731812a1e8703",
+                login: "marek",
+                name: "Marek Starý",
+                profilePicture: "images/marek.png"
+               },
+                {
+                _id: "61cf43e5c5e731812a1e8704",
+                login: "jan",
+                name: "Jan Malý",
+                profilePicture: "images/avatar.png"
+               }
+            ]
+        }
+        
+## Konverzace [/api/conversation]
+### Načíst konverzaci [GET]
+
++ body {: ""}
++ Response 200 (application/json)
+
+ 

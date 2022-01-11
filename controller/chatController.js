@@ -3,10 +3,9 @@ const  User = require('../model/User');
 const  Conversation = require('../model/Conversation');
 const ObjectId = require('mongodb').ObjectId;
 
+const bcrypt = require("bcrypt");
 
-//todo API + apiary.io
-// https://docs.mongodb.com/manual/reference/sql-comparison/#select
-
+//https://docs.mongodb.com/manual/reference/sql-comparison/#select
 
 /**
  * Vrátí seznam všech uživatelů (username, jméno, avatar)
@@ -36,9 +35,8 @@ exports.getUserContactList = async function (username) {
     
     return contactList;
 }
-
 /**
- * Seznam účastníků konverzace 
+ * Seznam účastníků konverzace
  * @param {String} cid id konverzace
  */
 exports.getConversation = async function (id) {
@@ -48,4 +46,28 @@ exports.getConversation = async function (id) {
 
     return conversation;
 }
+
+
+/**
+ * Zahashování hesla
+ * @param {string} text heslo
+ * @returns {string} hash
+ */
+exports.hash = function (text) {
+
+    return bcrypt.hashSync(text, 12);
+
+};
+
+/**
+ * Ověření hesla  
+ * @param {string} text heslo
+ * @param {string} hash 
+ * @returns {boolean} result true pokud je stejny 
+ */
+exports.compare = function (text, hash) {
+
+    return bcrypt.compareSync(text, hash);
+};
+
 
