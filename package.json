@@ -1,15 +1,17 @@
 {
   "name": "pwa-chat-app",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "jest --verbose ./test --detectOpenHandles --runInBand --forceExit"
   },
   "description": "pwa-chatApp",
   "author": {
-    "name": ""
+    "name": "tomas erlebach"
   },
   "dependencies": {
+    "axios-mock-adapter": "^1.20.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.15.0",
     "cookie-parser": "^1.4.0",
@@ -17,10 +19,12 @@
     "dotenv": "^10.0.0",
     "express": "^4.14.0",
     "express-session": "^1.17.2",
+    "jest": "^27.4.7",
     "mongoose": "^6.1.3",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.0",
+    "supertest": "^6.2.0",
     "ws": "^8.4.0"
   }
 }

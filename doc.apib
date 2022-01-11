@@ -10,15 +10,16 @@ Tomáš Erlebach
 
 ### Test připojení  [GET]
 + Request (application/json)
-        {"test": "test"} 
+        {
+            test: "test"
+        } 
 + Response 200 (application/json)
 
         {
-            "test": "test"
+            test: "test"
         }
  
 ## Uživatelé [/api/getAllUsers]
-
 
 ### List všech uživatelů [GET]
 
@@ -40,11 +41,61 @@ Tomáš Erlebach
                }
             ]
         }
++ Response 500 (application/json)
+    {error: "err"}
         
-## Konverzace [/api/conversation]
+
+## Konverzace [/api//conversation?username={username}&participant={participant}]
+
 ### Načíst konverzaci [GET]
 
-+ body {: ""}
-+ Response 200 (application/json)
++ Parameters
+    + username (String) přihlášený uživatel
+    + participant (String) účastník konverzace
 
++ Response 200 (application/json)
+{
+    conversation: {
+                _id: "61d2be0bf0bfa870708691c6",
+                participants: ["jan", "marek"]
+                }
+        messages: {
+            [
+                {
+                message: "Ahoj, jak je? ",
+                type:"text",
+                conversation:"61d2be0bf0bfa870708691c6",
+                sender:"marek"
+                }
+            ]
+      }
+ }
++ Response 500 (application/json)
+    {error: "err"}
+    
+    
+## Kontakty [/api/getUserContactList?username={username}]
+
+### Načíst už kontakty uživatele [GET]
+
++ Parameters
+    + username (String) přihlášený uživatel
+
++ Response 200 (application/json)
+[
+    {
+        "_id": "61cf43e5c5e731812a1e8704",
+        "login": "jan",
+        "name": "Jan Malý",
+        "profilePicture": "images/avatar.png",
+        "status": "Offline"
+    },
+    {
+        "_id": "61d21f087d61cd1521b4a9d7",
+        "login": "ondra",
+        "name": "Ondra Velký",
+        "profilePicture": "images/avatar.png",
+        "status": "Offline"
+    }
+]
  

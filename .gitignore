@@ -5,6 +5,5 @@ pwa-chatApp.njsproj.user
 obj
 bin
 start Nodemon liveServer.bat
-heroku
-heroku.pub
-
+tests.bat
+coverage
